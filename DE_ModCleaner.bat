@@ -40,11 +40,11 @@ IF /I "x%~1" EQU "x--dry-run" (
 )
 
 :: Aliases and other variables
-SET "$ECHO_Q=IF 'x%$QUIETMODE%' NEQ 'xY' ECHO"
+SET "$ECHO_Q=IF DEFINED $QUIETMODE ECHO"
 SET "$ORIGDIR=%CD%"
 
 :: Display script banner
-IF "x%$QUIETMODE%" NEQ "xY" CALL :BANNER
+IF DEFINED $QUIETMODE CALL :BANNER
 
 :: Set and create temp dirs/files
 :SET_TEMPDIR
@@ -79,7 +79,7 @@ FOR /F "tokens=*" %%A IN ('TYPE "%$TEMPDIR%\order.txt"') DO (
 :: Clean any empty directories after processing
 IF "x%$FOUND%" EQU "xY" (
 	%$ECHO_Q% Cleaning empty directories...
-	IF "x%$DRYRUN%" NEQ "xY" FOR /F "delims=" %%A IN ('DIR /S /B /AD ^| SORT /R') DO RMDIR /Q "%%~A" 2>NUL
+	IF DEFINED $DRYRUN FOR /F "delims=" %%A IN ('DIR /S /B /AD ^| SORT /R') DO RMDIR /Q "%%~A" 2>NUL
 	%$ECHO_Q%.
 )
 %$ECHO_Q% Search completed!
@@ -90,7 +90,7 @@ GOTO END_SCRIPT
 FINDSTR /X /C:"%~1" "%$LIST%" >NUL
 IF "x%ERRORLEVEL%" EQU "x0" (
 	%$ECHO_Q% * Dupe found: %~1
-	IF "x%$DRYRUN%" NEQ "xY" (
+	IF DEFINED $DRYRUN (
 		DEL /Q "%~1"
 		IF EXIST "%~1" (
 			ECHO !! CRITICAL: File removal failed!
@@ -266,7 +266,7 @@ EXIT /B
 :END_SCRIPT
 RMDIR /S /Q "%$TEMPDIR%"
 CD /D "%$ORIGDIR%"
-IF "x%$QUIETMODE%" NEQ "xY" (
+IF DEFINED $QUIETMODE (
 	ECHO.
 	ECHO Press any key to exit.
 	PAUSE >NUL
