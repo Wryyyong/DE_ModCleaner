@@ -1,7 +1,9 @@
 @ECHO OFF
 CLS
 SETLOCAL ENABLEEXTENSIONS DISABLEDELAYEDEXPANSION
-TITLE DE ModCleaner v1.00-BATCH
+SET "$SCRIPTVERSION=v1.00"
+SET "$TITLEHEADER=DE ModCleaner %$SCRIPTVERSION%-BATCH"
+TITLE %$TITLEHEADER%
 
 :: Check for command-line parameters
 :CHECK_PARAMS
@@ -66,9 +68,10 @@ FOR /F "tokens=*" %%A IN ('TYPE "%$TEMPDIR%\order.txt"') DO (
 	IF "x%%~A" NEQ "x=" (
 		IF EXIST "%$ORIGDIR%\%%~nA" (
 			SET "$FOUND=Y"
+			TITLE %$TITLEHEADER% ^| %%~A
 			%$ECHO_Q% == %%~A ==
 			CD /D "%$ORIGDIR%\%%~nA" >NUL
-			FOR /F "tokens=*" %%B IN ('FORFILES /S /M *.* /C "CMD /C ECHO @relpath"') DO (CALL :TEST_FOR_DUPE "%%~B" || GOTO END_SCRIPT)
+			FOR /F "tokens=*" %%B IN ('FORFILES /S /M *.* /C "CMD /C ECHO @relpath"') DO (CALL :TEST_FOR_DUPE "%%~B" "%%~A" || GOTO END_SCRIPT)
 			CD /D "%$ORIGDIR%" >NUL
 			%$ECHO_Q%.
 		)
@@ -87,6 +90,7 @@ GOTO END_SCRIPT
 
 :: Check temp.txt for a line containing the given string
 :TEST_FOR_DUPE
+TITLE %$TITLEHEADER% ^| %~2 ^| %~1
 FINDSTR /X /C:"%~1" "%$LIST%" >NUL
 IF "x%ERRORLEVEL%" EQU "x0" (
 	%$ECHO_Q% * Dupe found: %~1
@@ -254,7 +258,7 @@ ECHO.
 ECHO #############################
 ECHO #                           #
 ECHO #       DE ModCleaner       #
-ECHO #           v1.00           #
+ECHO #           %$SCRIPTVERSION%           #
 ECHO #                           #
 ECHO #       by Wrong#2935       #
 ECHO #                           #
