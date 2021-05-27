@@ -4,9 +4,9 @@ SETLOCAL ENABLEEXTENSIONS DISABLEDELAYEDEXPANSION
 SET "$SCRIPTVERSION=v1.00"
 SET "$TITLEHEADER=DE ModCleaner %$SCRIPTVERSION%-BATCH"
 
-:: Check for command-line parameters
+REM | Check for command-line parameters
 :CHECK_PARAMS
-:: Check for "help" argument
+REM | Check for "help" argument
 IF /I "x%~1" EQU "x--help" (
 	CALL :RUN_HELP
 	EXIT /B
@@ -23,7 +23,7 @@ IF /I "x%~1" EQU "x/?" (
 	CALL :RUN_HELP
 	EXIT /B
 )
-:: Standard arguments
+REM | Standard arguments
 IF /I "x%~1" EQU "x-q" (
 	SET "$QUIETMODE=Y"
 	SHIFT
@@ -40,28 +40,28 @@ IF /I "x%~1" EQU "x--dry-run" (
 	GOTO CHECK_PARAMS
 )
 
-:: Aliases and other variables
+REM | Aliases and other variables
 SET "$ECHO_Q=IF NOT DEFINED $QUIETMODE ECHO"
 SET "$ORIGDIR=%CD%"
 
-:: Set and create temp dirs/files
+REM | Set and create temp dirs/files
 :SET_TEMPDIR
 SET "$TEMPDIR=%TEMP%\DE_ModCleaner_%RANDOM:~-1%%RANDOM:~-1%%RANDOM:~-1%%RANDOM:~-1%%RANDOM:~-1%"
 IF EXIST "%$TEMPDIR%" GOTO SET_TEMPDIR
 SET "$LIST=%$TEMPDIR%\temp.txt"
 MKDIR "%$TEMPDIR%"
 
-:: Display script banner
+REM | Display script banner
 IF NOT DEFINED $QUIETMODE CALL :BANNER
 
-:: Tool check
+REM | Tool check
 %$ECHO_Q% Checking for required tools...
 %$ECHO_Q%.
 FOR %%A IN (FIND;FINDSTR;POWERSHELL;XCOPY) DO (CALL :CHECK_FOR_TOOL "%%~A" || GOTO END_SCRIPT)
 FOR /F "tokens=*" %%A IN ('POWERSHELL -Command "[system.console]::title"') DO SET "$ORIGTITLE=%%~A"
 TITLE %$TITLEHEADER%
 
-:: Generate and parse sorted resource-load list
+REM | Generate and parse sorted resource-load list
 CALL :GENERATE_ORDERFILE >"%$TEMPDIR%\order.txt"
 
 ECHO. >"%$LIST%"
@@ -82,7 +82,7 @@ FOR /F "tokens=*" %%A IN (%$TEMPDIR%\order.txt) DO (
 	)
 )
 
-:: Clean any empty directories after processing
+REM | Clean any empty directories after processing
 IF "x%$FOUND%" EQU "xY" (
 	TITLE %$TITLEHEADER% ^| Cleaning empty directories...
 	%$ECHO_Q% Cleaning empty directories...
@@ -93,7 +93,7 @@ TITLE %$TITLEHEADER% ^| Search completed!
 %$ECHO_Q% Search completed!
 GOTO END_SCRIPT
 
-:: Check temp.txt for a line containing the given string
+REM | Check temp.txt for a line containing the given string
 :TEST_FOR_DUPE
 TITLE %$TITLEHEADER% ^| %~2 ^| %~1
 FINDSTR /X /C:"%~1" "%$LIST%" >NUL
@@ -111,7 +111,7 @@ IF "x%ERRORLEVEL%" EQU "x0" (
 )
 EXIT /B 0
 
-:: Check for given tool; exit if fail
+REM | Check for given tool; exit if fail
 :CHECK_FOR_TOOL
 WHERE "%~1" >NUL 2>&1
 IF "x%ERRORLEVEL%" NEQ "x0" (
@@ -120,7 +120,7 @@ IF "x%ERRORLEVEL%" NEQ "x0" (
 )
 EXIT /B 0
 
-:: Help prompt
+REM | Help prompt
 :RUN_HELP
 CALL :BANNER
 ECHO     Usage:
@@ -139,7 +139,7 @@ ECHO         --dry-run
 ECHO             Simulates how the script would run without deleting any files/directories.
 EXIT /B
 
-:: The priority order list; sets are separated with '='
+REM | The priority order list; sets are separated with '='
 :GENERATE_ORDERFILE
 ECHO gameresources_patch1
 ECHO gameresources_patch2
@@ -257,7 +257,7 @@ ECHO shell_patch1
 ECHO shell
 EXIT /B
 
-:: Da banner
+REM | Da banner
 :BANNER
 ECHO.
 ECHO #############################
@@ -271,7 +271,7 @@ ECHO #############################
 ECHO.
 EXIT /B
 
-:: Cleanup and exiting
+REM | Cleanup and exiting
 :END_SCRIPT
 RMDIR /S /Q "%$TEMPDIR%"
 CD /D "%$ORIGDIR%"
