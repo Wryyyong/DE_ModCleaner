@@ -3,7 +3,6 @@ CLS
 SETLOCAL ENABLEEXTENSIONS DISABLEDELAYEDEXPANSION
 SET "$SCRIPTVERSION=v1.00"
 SET "$TITLEHEADER=DE ModCleaner %$SCRIPTVERSION%-BATCH"
-TITLE %$TITLEHEADER%
 
 :: Check for command-line parameters
 :CHECK_PARAMS
@@ -45,9 +44,6 @@ IF /I "x%~1" EQU "x--dry-run" (
 SET "$ECHO_Q=IF NOT DEFINED $QUIETMODE ECHO"
 SET "$ORIGDIR=%CD%"
 
-:: Display script banner
-IF NOT DEFINED $QUIETMODE CALL :BANNER
-
 :: Set and create temp dirs/files
 :SET_TEMPDIR
 SET "$TEMPDIR=%TEMP%\DE_ModCleaner_%RANDOM:~-1%%RANDOM:~-1%%RANDOM:~-1%%RANDOM:~-1%%RANDOM:~-1%"
@@ -55,23 +51,29 @@ IF EXIST "%$TEMPDIR%" GOTO SET_TEMPDIR
 SET "$LIST=%$TEMPDIR%\temp.txt"
 MKDIR "%$TEMPDIR%"
 
+:: Display script banner
+IF NOT DEFINED $QUIETMODE CALL :BANNER
+
 :: Tool check
 %$ECHO_Q% Checking for required tools...
 %$ECHO_Q%.
-FOR %%A IN (FINDSTR;FORFILES) DO (CALL :CHECK_FOR_TOOL "%%~A" || GOTO END_SCRIPT)
+FOR %%A IN (FIND;FINDSTR;POWERSHELL;XCOPY) DO (CALL :CHECK_FOR_TOOL "%%~A" || GOTO END_SCRIPT)
+FOR /F "tokens=*" %%A IN ('POWERSHELL -Command "[system.console]::title"') DO SET "$ORIGTITLE=%%~A"
+TITLE %$TITLEHEADER%
 
 :: Generate and parse sorted resource-load list
 CALL :GENERATE_ORDERFILE >"%$TEMPDIR%\order.txt"
 
 ECHO. >"%$LIST%"
-FOR /F "tokens=*" %%A IN ('TYPE "%$TEMPDIR%\order.txt"') DO (
+FOR /F "tokens=*" %%A IN (%$TEMPDIR%\order.txt) DO (
 	IF "x%%~A" NEQ "x=" (
 		IF EXIST "%$ORIGDIR%\%%~nA" (
 			SET "$FOUND=Y"
-			TITLE %$TITLEHEADER% ^| %%~A
-			%$ECHO_Q% == %%~A ==
 			CD /D "%$ORIGDIR%\%%~nA" >NUL
-			FOR /F "tokens=*" %%B IN ('FORFILES /S /M *.* /C "CMD /C ECHO @relpath"') DO (CALL :TEST_FOR_DUPE "%%~B" "%%~A" || GOTO END_SCRIPT)
+			%$ECHO_Q% == %%~A ==
+			TITLE %$TITLEHEADER% ^| %%~A ^| Generating file list...
+			XCOPY /L /S /Y /R ".\*.*" "%$TEMPDIR%" | FIND ".\" >"%$TEMPDIR%\filelist.txt"
+			FOR /F "tokens=*" %%B IN (%$TEMPDIR%\filelist.txt) DO (CALL :TEST_FOR_DUPE "%%~B" "%%~A" || GOTO END_SCRIPT)
 			CD /D "%$ORIGDIR%" >NUL
 			%$ECHO_Q%.
 		)
@@ -79,12 +81,15 @@ FOR /F "tokens=*" %%A IN ('TYPE "%$TEMPDIR%\order.txt"') DO (
 		ECHO. >"%$LIST%"
 	)
 )
+
 :: Clean any empty directories after processing
 IF "x%$FOUND%" EQU "xY" (
+	TITLE %$TITLEHEADER% ^| Cleaning empty directories...
 	%$ECHO_Q% Cleaning empty directories...
-	IF NOT DEFINED $DRYRUN FOR /F "delims=" %%A IN ('DIR /S /B /AD ^| SORT /R') DO RMDIR /Q "%%~A" 2>NUL
+	IF NOT DEFINED $DRYRUN FOR /F "tokens=*" %%A IN ('DIR /S /B /AD ^| SORT /R') DO RMDIR /Q "%%~A" 2>NUL
 	%$ECHO_Q%.
 )
+TITLE %$TITLEHEADER% ^| Search completed!
 %$ECHO_Q% Search completed!
 GOTO END_SCRIPT
 
@@ -275,3 +280,4 @@ IF NOT DEFINED $QUIETMODE (
 	ECHO Press any key to exit.
 	PAUSE >NUL
 )
+IF DEFINED $ORIGTITLE TITLE %$ORIGTITLE%
