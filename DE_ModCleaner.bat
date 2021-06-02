@@ -259,7 +259,7 @@ ECHO pvp_zap
 ECHO =
 ::ECHO tutorial_sp
 ::ECHO =
-::ECHO tutorial_demon
+::ECHO tutorial_demons
 ::ECHO =
 ECHO tutorial_pvp_laser_patch1
 ECHO tutorial_pvp_laser
