@@ -239,6 +239,8 @@ ECHO =
 ECHO pvp_bronco_patch1
 ECHO pvp_bronco
 ECHO =
+::ECHO pvp_darkmetal
+::ECHO =
 ECHO pvp_deathvalley_patch1
 ECHO pvp_deathvalley
 ECHO =
@@ -267,6 +269,8 @@ ECHO =
 ECHO shell_patch1
 ECHO shell
 EXIT /B
+
+REM | Extra comment to fill space because Batch is fucking weird
 
 REM | Da banner
 :BANNER
