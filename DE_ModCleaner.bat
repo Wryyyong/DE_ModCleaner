@@ -73,7 +73,11 @@ FOR /F "tokens=*" %%A IN (%$TEMPDIR%\order.txt) DO (
 			%$ECHO_Q% == %%~A ==
 			TITLE %$TITLEHEADER% ^| %%~A ^| Generating file list...
 			XCOPY /L /S /Y /R ".\*.*" "%$TEMPDIR%" | FIND ".\" >"%$TEMPDIR%\filelist.txt"
-			FOR /F "tokens=*" %%B IN (%$TEMPDIR%\filelist.txt) DO (CALL :TEST_FOR_DUPE "%%~B" "%%~A" || GOTO END_SCRIPT)
+			FOR /F "tokens=*" %%B IN (%$TEMPDIR%\filelist.txt) DO (
+				SET "$SKIPCHECK="
+				FOR %%C IN (json) DO IF /I "x%%~xB" EQU "x.%%~C" SET "$SKIPCHECK=Y"
+				IF NOT DEFINED $SKIPCHECK (CALL :TEST_FOR_DUPE "%%~B" "%%~A" || GOTO END_SCRIPT)
+			)
 			CD /D "%$ORIGDIR%" >NUL
 			%$ECHO_Q%.
 		)
