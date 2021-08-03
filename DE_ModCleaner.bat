@@ -1,7 +1,7 @@
 @ECHO OFF
 CLS
 SETLOCAL ENABLEEXTENSIONS DISABLEDELAYEDEXPANSION
-SET "$SCRIPTVERSION=v1.03"
+SET "$SCRIPTVERSION=v1.4"
 SET "$TITLEHEADER=DE ModCleaner %$SCRIPTVERSION%-BATCH"
 
 REM | Check for command-line parameters
@@ -278,7 +278,7 @@ ECHO.
 ECHO #############################
 ECHO #                           #
 ECHO #       DE ModCleaner       #
-ECHO #           %$SCRIPTVERSION%           #
+ECHO #           %$SCRIPTVERSION%          #
 ECHO #                           #
 ECHO #       by Wrong#2935       #
 ECHO #                           #
