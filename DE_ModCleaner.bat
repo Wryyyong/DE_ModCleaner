@@ -278,9 +278,10 @@ ECHO.
 ECHO #############################
 ECHO #                           #
 ECHO #       DE ModCleaner       #
-ECHO #           %$SCRIPTVERSION%          #
+ECHO #           %$SCRIPTVERSION%            #
 ECHO #                           #
-ECHO #       by Wrong#2935       #
+ECHO #            by             #
+ECHO #       Wryyyong#2935       #
 ECHO #                           #
 ECHO #############################
 ECHO.
