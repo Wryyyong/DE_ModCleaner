@@ -247,6 +247,12 @@ ECHO =
 ECHO e5m4_boss_patch1
 ECHO e5m4_boss
 ECHO =
+::ECHO e6m1_cult_horde
+::ECHO =
+::ECHO e6m2_earth_horde
+::ECHO =
+::ECHO e6m3_mcity_horde
+::ECHO =
 ECHO pvp_bronco_patch1
 ECHO pvp_bronco
 ECHO =
@@ -265,6 +271,8 @@ ECHO =
 ECHO pvp_shrapnel_patch1
 ECHO pvp_shrapnel
 ECHO =
+::ECHO pvp_sideswipe
+::ECHO =
 ECHO pvp_thunder_patch1
 ECHO pvp_thunder
 ECHO =
