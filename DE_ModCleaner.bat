@@ -145,8 +145,8 @@ EXIT /B
 
 REM | The priority order list; sets are separated with '='
 :GENERATE_ORDERFILE
-ECHO gameresources_patch2
 ECHO gameresources_patch1
+ECHO gameresources_patch2
 ECHO gameresources
 ECHO =
 ::ECHO meta
@@ -163,6 +163,7 @@ ECHO e1m1_intro_patch1
 ECHO e1m1_intro_patch2
 ECHO e1m1_intro
 ECHO =
+ECHO e1m2_battle_patch3
 ECHO e1m2_battle_patch2
 ECHO e1m2_battle_patch1
 ECHO e1m2_battle
@@ -185,8 +186,8 @@ ECHO e2m2_base_patch1
 ECHO e2m2_base_patch2
 ECHO e2m2_base
 ECHO =
-ECHO e2m3_core_patch3
 ECHO e2m3_core_patch2
+ECHO e2m3_core_patch3
 ECHO e2m3_core_patch1
 ECHO e2m3_core
 ECHO =
@@ -194,8 +195,8 @@ ECHO e2m4_boss_patch2
 ECHO e2m4_boss_patch1
 ECHO e2m4_boss
 ECHO =
-ECHO e3m1_slayer_patch3
 ECHO e3m1_slayer_patch2
+ECHO e3m1_slayer_patch3
 ECHO e3m1_slayer_patch1
 ECHO e3m1_slayer
 ECHO =
@@ -220,20 +221,20 @@ ECHO =
 ECHO dlc_hub_patch1
 ECHO dlc_hub
 ECHO =
-ECHO e4m1_rig_patch1
 ECHO e4m1_rig_patch2
+ECHO e4m1_rig_patch1
 ECHO e4m1_rig
 ECHO =
-ECHO e4m2_swamp_patch1
 ECHO e4m2_swamp_patch2
+ECHO e4m2_swamp_patch1
 ECHO e4m2_swamp
 ECHO =
 ECHO e4m3_mcity_patch2
 ECHO e4m3_mcity_patch1
 ECHO e4m3_mcity
 ECHO =
-ECHO e5m1_spear_patch2
 ECHO e5m1_spear_patch1
+ECHO e5m1_spear_patch2
 ECHO e5m1_spear
 ECHO =
 ECHO e5m2_earth_patch2
@@ -247,12 +248,15 @@ ECHO =
 ECHO e5m4_boss_patch1
 ECHO e5m4_boss
 ECHO =
-::ECHO e6m1_cult_horde
-::ECHO =
-::ECHO e6m2_earth_horde
-::ECHO =
-::ECHO e6m3_mcity_horde
-::ECHO =
+ECHO e6m1_cult_horde_patch1
+ECHO e6m1_cult_horde
+ECHO =
+ECHO e6m2_earth_horde_patch1
+ECHO e6m2_earth_horde
+ECHO =
+ECHO e6m3_mcity_horde_patch1
+ECHO e6m3_mcity_horde
+ECHO =
 ECHO pvp_bronco_patch1
 ECHO pvp_bronco
 ECHO =
@@ -271,8 +275,9 @@ ECHO =
 ECHO pvp_shrapnel_patch1
 ECHO pvp_shrapnel
 ECHO =
-::ECHO pvp_sideswipe
-::ECHO =
+ECHO pvp_sideswipe_patch1
+ECHO pvp_sideswipe
+ECHO =
 ECHO pvp_thunder_patch1
 ECHO pvp_thunder
 ECHO =
