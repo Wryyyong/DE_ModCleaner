@@ -143,6 +143,7 @@ EXIT /B
 
 REM | The priority order list; sets are separated with '='
 :GENERATE_ORDERFILE
+ECHO gameresources_patch3
 ECHO gameresources_patch1
 ECHO gameresources_patch2
 ECHO gameresources
@@ -239,8 +240,8 @@ ECHO e5m2_earth_patch2
 ECHO e5m2_earth_patch1
 ECHO e5m2_earth
 ECHO =
-ECHO e5m3_hell_patch2
 ECHO e5m3_hell_patch1
+ECHO e5m3_hell_patch2
 ECHO e5m3_hell
 ECHO =
 ECHO e5m4_boss_patch1
