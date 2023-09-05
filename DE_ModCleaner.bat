@@ -118,11 +118,9 @@ EXIT /B 0
 REM | Check for given tool; exit if fail
 :CHECK_FOR_TOOL
 WHERE "%~1" >NUL 2>&1
-IF "x%ERRORLEVEL%" NEQ "x0" (
-	ECHO !! CRITICAL: %~1 not found!
-	EXIT /B 1
-)
-EXIT /B 0
+IF "x%ERRORLEVEL%" EQU "x0" EXIT /B 0
+ECHO !! CRITICAL: %~1 not found!
+EXIT /B 1
 
 REM | Help prompt
 :RUN_HELP
